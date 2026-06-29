@@ -2,11 +2,24 @@ Bootstrap: docker
 From: python:3.11
 
 %post
-    pip install numpy scipy nibabel matplotlib networkx scikit-image
+    apt-get update && apt-get install -y \
+        curl \
+        wget \
+        tcsh \
+        gcc \
+        g++ \
+        libgomp1 \
+        libglib2.0-0
+
+    # Install Python packages
+    pip install numpy scipy nibabel matplotlib networkx scikit-image nilearn
+
+    # Install AFNI (includes 3dClusterize)
+    curl -O https://afni.nimh.nih.gov/pub/dist/bin/linux_ubuntu_16_64/@update.afni.binaries
+    tcsh @update.afni.binaries -package linux_ubuntu_16_64 -do_extras
 
 %environment
-    export LC_ALL=C
-    export LANG=C
+    export PATH=/usr/local/afni:$PATH
 
 %runscript
-    echo "Neuromast container started"
+    echo "Neuroimaging container ready (AFNI + Python)"
