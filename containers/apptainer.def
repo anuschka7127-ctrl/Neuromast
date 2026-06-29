@@ -1,0 +1,12 @@
+Bootstrap: docker
+From: python:3.11
+
+%post
+    pip install numpy scipy nibabel matplotlib networkx scikit-image
+
+%environment
+    export LC_ALL=C
+    export LANG=C
+
+%runscript
+    echo "Neuromast container started"
