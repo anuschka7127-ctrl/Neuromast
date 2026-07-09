@@ -1,0 +1,53 @@
+(base) anuschkabergmann@145 Neurosynth % 3dcopy stat.nii stat_afni
+++ 3dcopy: AFNI version=AFNI_26.1.04 (Jun  7 2026) [64-bit]
+** ERROR: output dataset name 'stat_afni' conflicts with existing file
+** ERROR: dataset NOT written to disk!
+(base) anuschkabergmann@145 Neurosynth % ls | grep stat_afni
+stat_afni+tlrc.BRIK.gz
+stat_afni+tlrc.HEAD
+(base) anuschkabergmann@145 Neurosynth % anuschkabergmann@145 Neurosynth % 3dcopy stat.nii stat_afni
+zsh: command not found: anuschkabergmann@145
+(base) anuschkabergmann@145 Neurosynth % 3dcopy stat.nii stat_afni
+++ 3dcopy: AFNI version=AFNI_26.1.04 (Jun  7 2026) [64-bit]
+
+(base) anuschkabergmann@145 Neurosynth % 3dcalc \
+  -a stat.nii \
+  -expr 'step(a-1.67)' \
+  -prefix stat_thr.nii
+++ 3dcalc: AFNI version=AFNI_26.1.04 (Jun  7 2026) [64-bit]
+++ Authored by: A cast of thousands
+++ Output dataset ./stat_thr.nii
+(base) anuschkabergmann@145 Neurosynth % 
+
+3dcalc \
+  -a stat.nii \
+  -expr 'step(a-1.67)' \
+  -prefix mask_167.nii
+
+  (base) anuschkabergmann@145 Neurosynth % 3dcalc -a stat.nii -expr 'step(a-1.67)' -prefix mask_167.nii
+++ 3dcalc: AFNI version=AFNI_26.1.04 (Jun  7 2026) [64-bit]
+++ Authored by: A cast of thousands
+++ Output dataset ./mask_167.nii
+(base) anuschkabergmann@145 Neurosynth % 
+
+(base) anuschkabergmann@145 Neurosynth % 3dclust \
+  -1dindex 0 \
+  -savemask clusters_thr.nii \
+  20 1.01 mask_167.nii
+++ 3dclust: AFNI version=AFNI_26.1.04 (Jun  7 2026) [64-bit]
+++ Authored by: RW Cox et alii
+++ *** Consider using program 3dClusterize instead of 3dclust ***
+#
+#Cluster report for file mask_167.nii 
+#[Connectivity radius = 20.00 mm  Volume threshold = 8.00 ]
+#[Single voxel volume = 8.0 (microliters) ]
+#[Voxel datum type    = float ]
+#[Voxel dimensions    = 2.000 mm X 2.000 mm X 2.000 mm ]
+#[Coordinates Order   = RAI ]
+#Mean and SEM based on Absolute Value of voxel intensities: 
+#
+#Volume  CM RL  CM AP  CM IS  minRL  maxRL  minAP  maxAP  minIS  maxIS    Mean     SEM    Max Int  MI RL  MI AP  MI IS
+#------  -----  -----  -----  -----  -----  -----  -----  -----  -----  -------  -------  -------  -----  -----  -----
+++ Output dataset ./clusters_thr.nii
+ 838024   -1.5   16.9   17.5  -72.0   68.0  -70.0  106.0  -56.0   78.0        1        0        1  -22.0   76.0  -56.0 
+(base) anuschkabergmann@145 Neurosynth % 
