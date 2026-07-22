@@ -1,0 +1,25 @@
+Let's summarise your numbers first:
+Tissue	Vessel voxels	Vessel volume (mm³)	Tissue voxels	Tissue volume (mm³)
+Grey matter (GM)	6,379,234	34,008.55	91,442,742	487,493.63
+White matter (WM)	6,705,718	35,749.09	84,735,196	451,734.81
+Now calculate:
+
+Vessel density=  tissue volume : vessel volume
+	
+ 
+Grey matter vessel density
+487493.625 : 34008.554688 = 0.06976
+or 6.98%
+
+White matter vessel density
+451734.8125 : 35749.085938 = 0.07914
+or 7.91%
+
+Interpretation
+For this subject: 
+GM vessel density ≈ 7.0%
+WM vessel density ≈ 7.9%
+
+so that means
+7 out of every 100 mm³ of grey matter volume is occupied by segmented vessel signal
+8 out of every 100 mm³ of white matter volume is occupied by segmented vessel signal
