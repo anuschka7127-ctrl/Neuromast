@@ -1,0 +1,33 @@
+
+GM vessels
+Number ofvsegments: 58074
+Mean vessel length: 1.10 mm
+Median vessel length: 0.35 mm
+SD: 20.92 mm
+Total length:63900.72 mm
+
+WM vessels 
+Number of segments: 49787
+Mean vessel length: 1.24 mm
+Median vessel length: 0.35 mm
+SD: 105.32 mm 
+Total length: 61713.47 mm
+
+1. White matter segments are slightly longer
+
+The average segment length is:
+GM = 1.10 mm
+WM = 1.24 mm
+
+2. Gray matter has more segments
+GM: 58,074
+WM: 49,787
+
+3. Total vessel length
+GM: 63.9 m
+WM: 61.7 m
+
+4. STD The standard deviation is: 
+WM: 105.32 mm
+GM: 20.92 mm
+
