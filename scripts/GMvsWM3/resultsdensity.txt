@@ -1,4 +1,4 @@
-Let's summarise your numbers first:
+
 Tissue	Vessel voxels	Vessel volume (mm³)	Tissue voxels	Tissue volume (mm³)
 Grey matter (GM)	6,379,234	34,008.55	91,442,742	487,493.63
 White matter (WM)	6,705,718	35,749.09	84,735,196	451,734.81
