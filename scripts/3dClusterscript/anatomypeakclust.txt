@@ -1,0 +1,8 @@
+| Cluster | Voxels | Peak MNI coordinate | Main anatomical label                                               | Interpretation                                                 |
+| ------- | -----: | ------------------- | ------------------------------------------------------------------- | -------------------------------------------------------------- |
+| 1       | 101966 | **-36, 58, 46**     | **Right intraparietal sulcus (hIP6), superior parietal cortex**     | Right IPS / superior parietal association cortex               |
+| 2       |   1292 | **48, -6, -44**     | **Left temporal region (BA38, temporal-to-parietal junction area)** | Left anterior/inferior temporal cortex                         |
+| 3       |    518 | **18, 82, -32**     | **Left cerebellar cortex (Crus II / lobule VII)**                   | Posterior cerebellum                                           |
+| 4       |    321 | **-22, 76, -56**    | No atlas match                                                      | Likely very inferior/posterior region; needs visual inspection |
+| 5       |     96 | **-6, 52, -48**     | **Right cerebellar cortex (lobule IX)**                             | Cerebellar region near brainstem                               |
+| 6       |     74 | **64, 24, 4**       | **Left superior temporal gyrus (Te3 / BA22)**                       | Auditory-temporal association cortex                           |
