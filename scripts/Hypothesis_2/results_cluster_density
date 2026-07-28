@@ -1,0 +1,10 @@
+(ants_env) anuschkabergmann@mac Neurosynth_cluster_analysis % cat results/vessel_density.csv
+cluster,roi_voxels,vessel_voxels,vessel_density
+cluster_01,112487377    ,11616370     ,0.10327
+cluster_02,1387095      ,109137       ,0.07868
+cluster_03,377439       ,25249        ,0.0669
+cluster_04,237470       ,16186        ,0.06816
+cluster_05,60892        ,3972         ,0.06523
+cluster_06,39125        ,1804         ,0.04611
+cluster_07,15637        ,2127         ,0.13602
+(ants_env) anuschkabergmann@mac Neurosynth_cluster_analysis % 04 
