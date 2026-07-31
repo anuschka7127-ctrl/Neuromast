@@ -28,6 +28,7 @@ echo "=========================================="
 # Input cluster map
 CLUSTER_MAP="masks/clusters_native.nii.gz"
 
+
 # Output directory
 OUTDIR="masks/individual_clusters"
 
@@ -36,17 +37,26 @@ OUTDIR="masks/individual_clusters"
 mkdir -p ${OUTDIR}
 
 
-# Selected clusters
-CLUSTERS=(1 2 3 4 5 6 7)
 
-
+# ----------------------------------------------------------
 # Extract each cluster
-for CLUSTER in "${CLUSTERS[@]}"
+#
+# seq generates zero-padded cluster numbers:
+# 01 02 03 ... 07
+#
+# This removes the need for:
+#   CLUSTERS=(1 2 3 4 5 6 7)
+#   printf "%02d"
+# ----------------------------------------------------------
+
+for CLUSTER in $(seq -f %02g 1 7)
+
 do
 
-    OUTPUT="${OUTDIR}/cluster_$(printf "%02d" ${CLUSTER}).nii.gz"
+    OUTPUT="${OUTDIR}/cluster_${CLUSTER}.nii.gz"
 
     echo "Extracting cluster ${CLUSTER}"
+
 
     3dcalc \
     -a ${CLUSTER_MAP} \
@@ -54,6 +64,7 @@ do
     -prefix ${OUTPUT}
 
 done
+
 
 
 echo ""

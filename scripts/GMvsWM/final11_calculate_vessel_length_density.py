@@ -2,7 +2,7 @@
 
 """
 ============================================================
-10_calculate_vessel_length_density.py
+11_calculate_vessel_length_density.py
 
 Purpose:
 Calculate tissue-normalised vessel length density.
@@ -10,14 +10,14 @@ Calculate tissue-normalised vessel length density.
 Formula:
 
 Vessel length density =
-vessel length (mm) / tissue volume (mm3)
+centreline vessel length (mm) / tissue volume (mm3)
+
+Centreline lengths are calculated using Skan.
 
 Outputs:
 - GM vessel length density
 - WM vessel length density
 
-Author:
-Anuschka Bergmann
 ============================================================
 """
 
@@ -52,7 +52,7 @@ OUTPUT = (
 
 
 # ------------------------------------------------------------
-# Read vessel lengths
+# Read Skan vessel lengths
 # ------------------------------------------------------------
 
 gm_length = None
@@ -63,15 +63,17 @@ with open(LENGTH_FILE, "r") as f:
 
     for line in f:
 
-        if "GM vessel length" in line:
-            gm_length = float(
+        if "Centreline vessel length" in line:
+
+            value = float(
                 line.split(":")[1]
             )
 
-        if "WM vessel length" in line:
-            wm_length = float(
-                line.split(":")[1]
-            )
+            if gm_length is None:
+                gm_length = value
+
+            else:
+                wm_length = value
 
 
 
@@ -88,11 +90,14 @@ with open(DENSITY_FILE, "r") as f:
     for line in f:
 
         if "GM tissue volume" in line:
+
             gm_volume = float(
                 line.split(":")[1]
             )
 
+
         if "WM tissue volume" in line:
+
             wm_volume = float(
                 line.split(":")[1]
             )
@@ -110,36 +115,42 @@ wm_length_density = wm_length / wm_volume
 
 
 # ------------------------------------------------------------
-# Save results
+# Save
 # ------------------------------------------------------------
 
 with open(OUTPUT, "w") as f:
 
     f.write("Subject: sub-02\n\n")
 
+    f.write("Grey Matter\n")
+    f.write("----------------\n")
+
     f.write(
-        f"GM vessel length (mm): {gm_length}\n"
+        f"Centreline vessel length (mm): {gm_length}\n"
     )
 
     f.write(
-        f"GM tissue volume (mm3): {gm_volume}\n"
+        f"Tissue volume (mm3): {gm_volume}\n"
     )
 
     f.write(
-        f"GM vessel length density: {gm_length_density}\n\n"
+        f"Vessel length density: {gm_length_density}\n\n"
     )
 
 
+    f.write("White Matter\n")
+    f.write("----------------\n")
+
     f.write(
-        f"WM vessel length (mm): {wm_length}\n"
+        f"Centreline vessel length (mm): {wm_length}\n"
     )
 
     f.write(
-        f"WM tissue volume (mm3): {wm_volume}\n"
+        f"Tissue volume (mm3): {wm_volume}\n"
     )
 
     f.write(
-        f"WM vessel length density: {wm_length_density}\n"
+        f"Vessel length density: {wm_length_density}\n"
     )
 
 
@@ -150,6 +161,7 @@ print("Vessel length density calculation complete")
 print("Saved:")
 print(OUTPUT)
 print("======================================")
+
 
 print(
     f"GM length density: {gm_length_density}"

@@ -1,50 +1,119 @@
 #!/bin/bash
 
-# Calculate vessel density within each extracted cluster
-# Vessel density = vessel voxels / cluster voxels
+# ==========================================================
+# 06_calculate_vessel_density.sh
+#
+# Purpose:
+# Calculate vessel density within each selected
+# Neurosynth cluster.
+#
+# Formula:
+#
+# Vessel density =
+# vessel voxels / ROI voxels
+#
+# Inputs:
+#   masks/individual_clusters/cluster_XX.nii.gz
+#   vessels/cluster_XX_vessels.nii.gz
+#
+# Output:
+#   results/vessel_density.csv
+#
+# Selected clusters:
+#   01-07 (manually selected for downstream analysis)
+#
+# Author:
+# Anuschka Bergmann
+# ==========================================================
 
-mkdir -p vessels
-mkdir -p results
 
-echo "cluster,roi_voxels,vessel_voxels,vessel_density" > results/vessel_density.csv
+set -e
 
-for i in 01 02 03 04 05 06 07
+
+echo "=========================================="
+echo "Calculating cluster vessel density"
+echo "=========================================="
+
+
+# ----------------------------------------------------------
+# Directories
+# ----------------------------------------------------------
+
+CLUSTER_DIR="masks/individual_clusters"
+
+VESSEL_DIR="vessels"
+
+OUTDIR="results"
+
+
+mkdir -p ${OUTDIR}
+
+
+
+# ----------------------------------------------------------
+# Output CSV
+# ----------------------------------------------------------
+
+OUTPUT="${OUTDIR}/vessel_density.csv"
+
+
+echo "cluster,roi_voxels,vessel_voxels,vessel_density" > ${OUTPUT}
+
+
+
+# ----------------------------------------------------------
+# Calculate density
+# ----------------------------------------------------------
+
+for i in $(seq -f "%02g" 1 7)
+
 do
+
+    echo ""
     echo "Processing cluster ${i}"
 
-    cluster_mask="masks/individual_clusters/cluster_${i}.nii.gz"
-    vessel_mask="vessels/cluster_${i}_vessels.nii.gz"
 
-    # Extract vessels within cluster
-    3dcalc \
-    -a ${cluster_mask} \
-    -b vessels_binary.nii.gz \
-    -expr 'a*b' \
-    -prefix ${vessel_mask} \
-    -overwrite
 
-    # Count cluster voxels
-    roi_voxels=$(3dBrickStat \
-    -count \
-    -non-zero \
-    ${cluster_mask})
+    ROI="${CLUSTER_DIR}/cluster_${i}.nii.gz"
 
-    # Count vessel voxels
-    vessel_voxels=$(3dBrickStat \
-    -count \
-    -non-zero \
-    ${vessel_mask})
+    VESSEL="${VESSEL_DIR}/cluster_${i}_vessels.nii.gz"
 
-    # Calculate density
-    density=$(python3 - <<EOF
-roi=${roi_voxels}
-vessel=${vessel_voxels}
-print(round(vessel/roi,5))
-EOF
-)
 
-    echo "cluster_${i},${roi_voxels},${vessel_voxels},${density}" >> results/vessel_density.csv
+
+    # ROI voxel count
+
+    roi_voxels=$(fslstats \
+    ${ROI} \
+    -V | awk '{print $1}')
+
+
+
+    # Vessel voxel count
+
+    vessel_voxels=$(fslstats \
+    ${VESSEL} \
+    -V | awk '{print $1}')
+
+
+
+    # Vessel density
+
+    density=$(echo "${vessel_voxels}/${roi_voxels}" | bc -l)
+
+
+
+    # Save result
+
+    echo "${i},${roi_voxels},${vessel_voxels},${density}" >> ${OUTPUT}
+
 
 done
 
-echo "Done!"
+
+
+echo ""
+echo "=========================================="
+echo "Vessel density calculation complete"
+echo "Saved:"
+echo "${OUTPUT}"
+echo "=========================================="

@@ -4,70 +4,79 @@
 # 05_extract_cluster_vessels.sh
 #
 # Purpose:
-# Extract vessel masks within each individual Neurosynth
-# cluster ROI in native 7T vessel reference space.
+# Extract vessel masks contained within each selected
+# Neurosynth cluster.
 #
-# Input:
+# Method:
+# Cluster vessel mask =
+# cluster mask × binary vessel mask
+#
+# Inputs:
 #   masks/individual_clusters/cluster_XX.nii.gz
 #   vessels_binary.nii.gz
 #
 # Output:
 #   vessels/cluster_XX_vessels.nii.gz
 #
-# Method:
-#   Binary multiplication:
-#   cluster mask × binary vessel mask
+# Selected clusters:
+#   01-07 (manually selected for downstream analysis)
 #
-# Author: Anuschka Bergmann
+# Author:
+# Anuschka Bergmann
 # ==========================================================
 
 
+set -e
+
+
 echo "=========================================="
-echo "Extracting cluster-specific vessel masks"
+echo "Extracting vessels within clusters"
 echo "=========================================="
 
 
-# Input vessel mask
-VESSEL_MASK="vessels_binary.nii.gz"
+# ----------------------------------------------------------
+# Inputs
+# ----------------------------------------------------------
 
-
-# Input cluster directory
 CLUSTER_DIR="masks/individual_clusters"
 
+VESSEL_MASK="vessels_binary.nii.gz"
 
-# Output directory
 OUTDIR="vessels"
 
 
-# Create output directory
 mkdir -p ${OUTDIR}
 
 
-# Selected clusters
-CLUSTERS=(01 02 03 04 05 06 07)
 
+# ----------------------------------------------------------
+# Extract vessels for each cluster
+# ----------------------------------------------------------
 
-# Extract vessels within each cluster
-for CLUSTER in "${CLUSTERS[@]}"
+for i in $(seq -f "%02g" 1 7)
+
 do
 
-    INPUT_CLUSTER="${CLUSTER_DIR}/cluster_${CLUSTER}.nii.gz"
+    CLUSTER_MASK="${CLUSTER_DIR}/cluster_${i}.nii.gz"
 
-    OUTPUT="${OUTDIR}/cluster_${CLUSTER}_vessels.nii.gz"
+    OUTPUT="${OUTDIR}/cluster_${i}_vessels.nii.gz"
 
 
-    echo "Processing cluster ${CLUSTER}"
+
+    echo ""
+    echo "Extracting vessels for cluster ${i}"
+
 
 
     3dcalc \
-    -a ${INPUT_CLUSTER} \
+    -a ${CLUSTER_MASK} \
     -b ${VESSEL_MASK} \
-    -expr 'a*b' \
-    -prefix ${OUTPUT} \
-    -overwrite
+    -expr "a*b" \
+    -prefix ${OUTPUT}
 
 
 done
+
 
 
 echo ""
